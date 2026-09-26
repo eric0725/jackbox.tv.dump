@@ -32568,7 +32568,7 @@ class pm {
   static html(e) {
     if (String(e).match(/<fart>/g)) {
       const i = new Audio(
-        new URL("/main/@connect/assets/BhWysX6c.wav", import.meta.url).href,
+        new URL("/jackbox.tv.dump/main/@connect/assets/BhWysX6c.wav", import.meta.url).href,
       );
       ((i.volume = 0.1), i.play());
     }
@@ -43713,9 +43713,9 @@ const M6 = {
       dismissText: String,
     },
   }),
-  k6 = "/main/@connect/assets/Bwlnl62i.png",
-  G6 = "/main/@connect/assets/DN8YV_ih.png",
-  $6 = "/main/@connect/assets/Dv-2T4fF.png",
+  k6 = "/jackbox.tv.dump/main/@connect/assets/Bwlnl62i.png",
+  G6 = "/jackbox.tv.dump/main/@connect/assets/DN8YV_ih.png",
+  $6 = "/jackbox.tv.dump/main/@connect/assets/Dv-2T4fF.png",
   V6 = { key: 0, class: "image", src: k6, alt: "Kicked" },
   F6 = { key: 1, class: "image", src: G6, alt: "Thank You" },
   q6 = { key: 2, class: "image", src: $6, alt: "Error" },
@@ -45048,7 +45048,7 @@ const nW = lr({
       },
     },
   }),
-  iW = "/main/@connect/assets/BP6xhM9y.png",
+  iW = "/jackbox.tv.dump/main/@connect/assets/BP6xhM9y.png",
   sW = { class: "jbg password" },
   aW = { class: "text" },
   oW = { key: 0, class: "subtext" },
@@ -46393,7 +46393,7 @@ const QW = Cr(XW, [
       async load() {
         try {
           const e = await (
-              await fetch("/main/@connect/slider/slider.json")
+              await fetch("/jackbox.tv.dump/main/@connect/slider/slider.json")
             ).json(),
             n = (e == null ? void 0 : e.bannerAds) ?? [];
           ((this.banners = n
@@ -46414,7 +46414,7 @@ const QW = Cr(XW, [
         this.banners = [
           {
             url: "https://www.jackboxgames.com/packs/the-jackbox-party-pack-10?utm_source=jbgtvpp10&utm_medium=jbgtvpp10&utm_campaign=jbgtvpp10",
-            image: "/main/@connect/slider//pp10.png",
+            image: "/jackbox.tv.dump/main/@connect/slider//pp10.png",
             text: "AVAILABLE NOW!",
           },
         ];

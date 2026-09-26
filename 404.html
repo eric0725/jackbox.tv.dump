@@ -7,6 +7,9 @@
              domains (ecast game servers, images). This blocks the Sentry / Google Analytics /
              Google Tag Manager / Mixpanel reporting that every game bundle carries a copy of. -->
         <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https://*.jackboxgames.com https://*.jackbox.tv https://s3.amazonaws.com; media-src 'self' data: blob: https://*.jackboxgames.com https://*.jackbox.tv; connect-src 'self' data: blob: https://*.jackboxgames.com wss://*.jackboxgames.com https://*.jackbox.tv; worker-src 'self' blob:; frame-src 'self' https://*.jackboxgames.com https://*.jackbox.tv https://www.youtube.com; object-src 'none'">
+        <!-- [mod] GitHub Pages serves this for unknown paths (deep links like /jackbox.tv.dump/moderator).
+             Copy of index.html; <base> keeps relative asset URLs working from nested paths. -->
+        <base href="/jackbox.tv.dump/">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <meta name="viewport" content="minimal-ui, width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
         

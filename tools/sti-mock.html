@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<!--
+  Offline test harness: runs the real jackbox.tv loader + Survive the Internet controller
+  against a fake in-page ecast server, so the custom photo overrides can be checked
+  without a live game. Open /jackbox.tv.dump/tools/sti-mock.html, join room TEST with any
+  name, then call mockEcast.show("final" | "vote" | "caption") in the console.
+  Only room code TEST is faked; everything else talks to the real network.
+-->
+<html lang="en-US" class="js">
+<head>
+  <meta charset="utf-8">
+        <!-- [mod] Content Security Policy: the page may only talk to this site and Jackbox's own
+             domains (ecast game servers, images). This blocks the Sentry / Google Analytics /
+             Google Tag Manager / Mixpanel reporting that every game bundle carries a copy of. -->
+        <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https://*.jackboxgames.com https://*.jackbox.tv https://s3.amazonaws.com; media-src 'self' data: blob: https://*.jackboxgames.com https://*.jackbox.tv; connect-src 'self' data: blob: https://*.jackboxgames.com wss://*.jackboxgames.com https://*.jackbox.tv; worker-src 'self' blob:; frame-src 'self' https://*.jackboxgames.com https://*.jackbox.tv https://www.youtube.com; object-src 'none'">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>STI mock</title>
+  <script>
+    (() => {
+      const MOCK_HOST = "mock-ecast.invalid";
+      const room = {
+        appId: "mock", appTag: "survivetheinternet", audienceEnabled: false, code: "TEST",
+        host: MOCK_HOST, audienceHost: MOCK_HOST, locked: false, full: false,
+        maxPlayers: 8, minPlayers: 3, moderationEnabled: false, passwordRequired: false,
+        twitchLocked: false, locale: "en", keepalive: false, controllerBranch: "",
+      };
+      const realFetch = window.fetch.bind(window);
+      window.fetch = (input, init) => {
+        const url = typeof input === "string" ? input : input.url;
+        if (/\/api\/v2\/rooms\/TEST(\?|$)/.test(url))
+          return Promise.resolve(new Response(JSON.stringify({ ok: true, body: room }),
+            { headers: { "Content-Type": "application/json" } }));
+        return realFetch(input, init);
+      };
+
+      const photo = (n) => `images/survivetheinternet/photos/${n}.jpg`;
+      const player = { playerName: "TESTER", playerInfo: {} };
+      const states = {
+        lobby: { ...player, state: "Lobby", lobbyState: "WaitingForMore", isAllowedToStartGame: false },
+        final: { ...player, state: "EnterSingleText", text: { aboveBlackBox: `<img src='${photo("Beach")}'/>`, blackBox: "What's your caption?" } },
+        caption: { ...player, state: "MakeSingleChoice", text: { blackBox: `Pick one <img src='${photo("Camping")}'/> below` }, choices: [{ text: "Option A" }, { text: "Option B" }] },
+        vote: { ...player, state: "Voting", choices: [
+          { text: "Custom photo (Bear)", thumbnail: photo("Bear-thumb") },
+          { text: "Custom photo (BBQ)", thumbnail: photo("BBQ-thumb") },
+          { text: "Stock photo (Dog)", thumbnail: photo("Dog-thumb") },
+        ] },
+      };
+
+      const RealWS = window.WebSocket;
+      let active = null, pc = 0, version = 0;
+      class FakeWS extends EventTarget {
+        constructor(url, protocol) {
+          if (!String(url).includes(MOCK_HOST)) return new RealWS(url, protocol);
+          super();
+          this.url = url; this.protocol = protocol || ""; this.readyState = 0;
+          this.userId = new URL(url.replace(/^wss/, "https")).searchParams.get("user-id");
+          active = this;
+          setTimeout(() => {
+            this.readyState = 1;
+            this._emit("open", {});
+            const obj = (key, val) => ["object", { key, val, version: 0, from: 1 }, { locked: false }];
+            this._recv({ opcode: "client/welcome", result: {
+              id: 2, name: "TESTER", secret: "mock-secret", reconnect: false, deviceId: "mock-device",
+              here: { 1: { id: 1, roles: { host: {} } } }, profile: { id: 2, roles: { player: { name: "TESTER" } } },
+              entities: { "bc:room": obj("bc:room", { state: "Lobby" }), [this.customerKey]: obj(this.customerKey, states.lobby) },
+            } });
+          }, 50);
+        }
+        get customerKey() { return `bc:customer:${this.userId}`; }
+        _emit(type, ev) {
+          const e = Object.assign(new Event(type), ev);
+          this.dispatchEvent(e);
+          if (typeof this["on" + type] === "function") this["on" + type](e);
+        }
+        _recv(msg) { this._emit("message", { data: JSON.stringify({ pc: ++pc, ...msg }) }); }
+        send(data) {
+          const m = JSON.parse(data);
+          console.log("[mock ecast] client ->", m);
+          if (m.seq != null) this._recv({ re: m.seq, opcode: "ok", result: {} });
+        }
+        close(code = 1000) { this.readyState = 3; this._emit("close", { code, reason: "" }); }
+      }
+      Object.assign(FakeWS, { CONNECTING: 0, OPEN: 1, CLOSING: 2, CLOSED: 3 });
+      window.WebSocket = FakeWS;
+
+      window.mockEcast = {
+        states,
+        show(name) {
+          if (!active) throw new Error("not connected yet; join room TEST first");
+          active._recv({ opcode: "object", result: { key: active.customerKey, val: states[name], version: ++version, from: 1 } });
+        },
+      };
+    })();
+  </script>
+  <script type="module" crossorigin src="../script-0.js"></script>
+  <link rel="stylesheet" crossorigin href="../style-0.css">
+</head>
+<body>
+  <div id="app" class="app"></div>
+</body>
+</html>

@@ -22073,7 +22073,7 @@ class U2 {
   static html(e) {
     if (String(e).match(/<fart>/g)) {
       const i = new Audio(
-        new URL("/main/pp11/sfx/assets/BhWysX6c.wav", import.meta.url).href,
+        new URL("/jackbox.tv.dump/main/pp11/sfx/assets/BhWysX6c.wav", import.meta.url).href,
       );
       ((i.volume = 0.1), i.play());
     }
@@ -35566,11 +35566,11 @@ const vP = is(VW),
       },
     },
   }),
-  jw = "/main/pp11/sfx/assets/DLGomgNm.png",
-  Ww = "/main/pp11/sfx/assets/B8C13_5i.png",
-  qW = "/main/pp11/sfx/assets/DaAsZ-1o.png",
-  GW = "/main/pp11/sfx/assets/C0nA0hrp.png",
-  jW = "/main/pp11/sfx/assets/_LZDgMYc.png",
+  jw = "/jackbox.tv.dump/main/pp11/sfx/assets/DLGomgNm.png",
+  Ww = "/jackbox.tv.dump/main/pp11/sfx/assets/B8C13_5i.png",
+  qW = "/jackbox.tv.dump/main/pp11/sfx/assets/DaAsZ-1o.png",
+  GW = "/jackbox.tv.dump/main/pp11/sfx/assets/C0nA0hrp.png",
+  jW = "/jackbox.tv.dump/main/pp11/sfx/assets/_LZDgMYc.png",
   WW = { class: "jbg" },
   XW = { key: 0, class: "options" },
   HW = { key: 1, class: "feedback" },
@@ -37478,9 +37478,9 @@ const mH = {
       dismissText: String,
     },
   }),
-  EH = "/main/pp11/sfx/assets/Bwlnl62i.png",
-  vH = "/main/pp11/sfx/assets/DN8YV_ih.png",
-  yH = "/main/pp11/sfx/assets/Dv-2T4fF.png",
+  EH = "/jackbox.tv.dump/main/pp11/sfx/assets/Bwlnl62i.png",
+  vH = "/jackbox.tv.dump/main/pp11/sfx/assets/DN8YV_ih.png",
+  yH = "/jackbox.tv.dump/main/pp11/sfx/assets/Dv-2T4fF.png",
   TH = { key: 0, class: "image", src: EH, alt: "Kicked" },
   bH = { key: 1, class: "image", src: vH, alt: "Thank You" },
   RH = { key: 2, class: "image", src: yH, alt: "Error" },
@@ -55293,7 +55293,7 @@ class xne {
       if (!Ut(this, jn)) {
         const i = e.workerURL
           ? new URL(e.workerURL)
-          : new URL("/main/pp11/sfx/assets/DoJTI3u2.js", import.meta.url);
+          : new URL("/jackbox.tv.dump/main/pp11/sfx/assets/DoJTI3u2.js", import.meta.url);
         (ju(this, jn, new Worker(i, { type: "module" })),
           Ut(this, $f).call(this));
       }
@@ -55546,7 +55546,7 @@ class One {
       (this.levelBuffer = []));
   }
   async loadFfmpeg() {
-    const e = "/main/pp11/sfx/assets",
+    const e = "/jackbox.tv.dump/main/pp11/sfx/assets",
       n = "https://unpkg.com/@ffmpeg/core@0.12.4/dist/esm";
     if (!fv) {
       const i = await cv(`${n}/ffmpeg-core.js`, "text/javascript"),
@@ -57665,10 +57665,10 @@ const Fse = rt(Kse, [
       },
     },
   }),
-  Gse = "/main/pp11/sfx/assets/q8FSibOu.png",
-  jse = "/main/pp11/sfx/assets/CTwWTE9K.png",
-  Wse = "/main/pp11/sfx/assets/Cyivhz1w.png",
-  Xse = "/main/pp11/sfx/assets/VyvnyMUo.png",
+  Gse = "/jackbox.tv.dump/main/pp11/sfx/assets/q8FSibOu.png",
+  jse = "/jackbox.tv.dump/main/pp11/sfx/assets/CTwWTE9K.png",
+  Wse = "/jackbox.tv.dump/main/pp11/sfx/assets/Cyivhz1w.png",
+  Xse = "/jackbox.tv.dump/main/pp11/sfx/assets/VyvnyMUo.png",
   Hse = { class: "constrain" },
   Yse = ["alt"],
   zse = { class: "recap" },
@@ -57916,8 +57916,8 @@ const hae = rt(lae, [
       },
     },
   }),
-  dae = "/main/pp11/sfx/assets/BZIcutwF.png",
-  _ae = "/main/pp11/sfx/assets/DyCDT6Kv.png",
+  dae = "/jackbox.tv.dump/main/pp11/sfx/assets/BZIcutwF.png",
+  _ae = "/jackbox.tv.dump/main/pp11/sfx/assets/DyCDT6Kv.png",
   mae = { class: "constrain" },
   gae = { key: 1, class: "constrain" },
   Eae = ["alt"],

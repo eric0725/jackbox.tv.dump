@@ -1,3 +1,8 @@
+// [mod] Path this site is served from (e.g. "/jackbox.tv.dump/" on GitHub Pages),
+// derived from this script's own URL so bundle URLs and routes work under a subpath.
+const JB_BASE = new URL(".", import.meta.url).pathname;
+const jbStripBase = (p) =>
+  p.startsWith(JB_BASE) ? "/" + p.slice(JB_BASE.length) : p === JB_BASE.slice(0, -1) ? "/" : p;
 var V0 = Object.defineProperty;
 var M0 = (r, t, n) =>
   t in r
@@ -3758,19 +3763,13 @@ class j0 {
   constructor() {
     ze(this, "isSetup", !1);
   }
+  // [mod] Google Analytics / Mixpanel reporting to Jackbox's accounts disabled:
+  // setup() no longer initialises either SDK, and ga()/mp() drop every event.
   setup() {
-    pf("config", "G-V1QJVQMYF1", { send_page_view: !1 }),
-      cf.init("2e284873b7269f13b850ac994abfd848", { debug: "false" }),
-      delete window.tv.analytics,
-      (window.tv.analytics = this),
-      (this.isSetup = !0);
+    delete window.tv.analytics, (window.tv.analytics = this), (this.isSetup = !0);
   }
-  ga(t, n) {
-    this.isSetup || this.setup(), pf("event", t, n);
-  }
-  mp(t, n) {
-    this.isSetup || this.setup(), cf.track(t, n);
-  }
+  ga(t, n) {}
+  mp(t, n) {}
   pageView(t) {
     this.ga("page_view", {
       page_title: t,
@@ -20212,7 +20211,7 @@ let Iy = class {
     );
   }
   getS3Url(t, n) {
-    return `${window.location.origin}/${n}/${t}`;
+    return `${window.location.origin}${JB_BASE}${n}/${t}`;
   }
   async loadHMRBundle(t) {
     const n = t.file;
@@ -20274,6 +20273,8 @@ const hc = { EcastEntityNotFound: 2005, EcastFilterError: 2021 },
     "Cannot read properties of null (reading 'removeEventListener')",
   ],
   Oy = (r) => {
+    // [mod] Error reporting to Jackbox's Sentry project disabled.
+    return;
     yy({
       dsn: "https://bb026273d98c4b99ab11c1de369f521f@o420318.ingest.sentry.io/6387933",
       debug: "false",
@@ -20581,7 +20582,7 @@ class $y {
     ze(this, "hmrApp", "loader");
     ze(this, "sites");
     this.sites = t;
-    const n = this.getMatch(window.location.pathname);
+    const n = this.getMatch(jbStripBase(window.location.pathname));
     this.executeMatch(n);
   }
   executeMatch(t) {
@@ -20623,7 +20624,7 @@ class $y {
       (i.hashString || (i.hashString = n.hashString),
       i.params || (i.params = n.params),
       i.queryString || (i.queryString = n.queryString)),
-      window.history.replaceState(null, "", t),
+      window.history.replaceState(null, "", JB_BASE + t.replace(/^\/+/, "")),
       this.executeMatch(i);
   }
   getSite() {
